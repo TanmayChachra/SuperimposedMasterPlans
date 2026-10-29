@@ -1,7 +1,7 @@
 /* Superimposed Master Plans additions. Loaded after main.js; touches the upstream page only through its DOM
  * and by capturing the ol.Map it creates (main.js constructs it after cities.json loads, so the wrapper is in time).
  * - legend pane for the selected city (fields legendUrl, legendTitle, source, sourceUrl, note, bounds in mpm/legends.json)
- * - "more plans at once": extra overlay layers, so neighbouring plans can be viewed together
+ * - layers panel: several plans at once, each with its own visibility, opacity, legend and remove button
  * - Search Address also loads the plan(s) covering the place found
  * - ?city=<name>&plus=<name,name> deep links
  * - credit line, About text, comment UI hidden (see mpm.css and stub-supabase.js)
@@ -11,7 +11,7 @@
   var cities = {};
   var list = [];
   var current = null;
-  var pane, tab, fab, extrasBox, toast;
+  var pane, tab, fab, toast;
   var extras = {};   // name -> ol layer
   var map = null;
 
@@ -30,19 +30,24 @@
   function $(id) { return document.getElementById(id); }
 
   function branding() {
-    var h = document.querySelector('#menu-content h2');
-    if (h) {
-      h.textContent = 'Superimposed Master Plans';
-    }
-    document.title = 'Superimposed Master Plans';
+    var h = document.querySelector('#menu-content h2'), hd = $('controls-header');
+    if (h) { h.remove(); }
+    if (hd) { hd.insertAdjacentHTML('beforeend', '<div class="mpm-brand"><span class="mpm-mark">SB</span><div><strong>Silverleaf Buildcon</strong><small>Master plan overlay &middot; internal</small></div></div>'); }
+    document.title = 'Silverleaf Buildcon | Master Plan Overlay';
     Array.prototype.forEach.call(document.querySelectorAll('label'), function (l) {
-      if (l.textContent.trim() === 'Comments') { l.classList.add('mpm-hidden'); }
+      var s = l.textContent.trim();
+      if (s === 'Comments' || s === 'City') { l.classList.add('mpm-hidden'); }
+      if (s === 'Search Address') { l.textContent = 'Find a place'; }
     });
     var modal = document.querySelector('#info-modal .modal-content');
     if (modal) {
-      modal.appendChild(el('p', {}, '<strong>About this version:</strong> a public fork of <a href="https://github.com/datsvarun/master-plan-viewer" target="_blank" rel="noopener">Master Plan Viewer</a> by Varun Phadke, with added plans, map legends and a multi-plan view. ' +
-        'Overlays are scanned government maps placed on the map by control points, so treat them as zone-level only (tens of metres of error). ' +
-        'Comments are turned off here. Source and accuracy notes for each plan are in the Legend panel.'));
+      Array.prototype.forEach.call(Array.prototype.slice.call(modal.children), function (n) { if (n.id !== 'modal-close') { n.remove(); } });
+      modal.insertAdjacentHTML('beforeend',
+        '<h2>About this tool</h2>' +
+        '<p><strong>Silverleaf Buildcon master plan overlay.</strong> An internal tool for viewing government master plans, zone maps and village khasra (plot) maps on top of a real map, for site selection and due diligence.</p>' +
+        '<h3>How to read it</h3><p>Plans are scanned government maps placed on the map with control points, so treat them as zone-level (tens of metres of error). Khasra maps come from the UP Bhu-Naksha portal and are as accurate as the portal. Each layer\'s source, status and accuracy note is behind its <b>i</b> button.</p>' +
+        '<h3>Disclaimer</h3><p>For internal reference only. This is not a legal document or a survey. Verify with the issuing authority (GDA, MDA, DDA, tehsil) and the khatauni before any decision. Draft or notified status is noted per layer.</p>' +
+        '<h3>Data</h3><p>Base map &copy; OpenStreetMap contributors. Satellite imagery &copy; Esri. Government maps remain the property of the issuing departments.</p>');
     }
     toast = el('div', { id: 'mpm-toast' });
     document.body.appendChild(toast);
@@ -139,8 +144,7 @@
     if (!city || !map) { return; }
     setTimeout(function () {
       if (current !== city) { return; }
-      var mine = Object.keys(extras).map(function (k) { return extras[k]; });
-      var main = map.getLayers().getArray().filter(function (l) { return l instanceof ol.layer.WebGLTile && mine.indexOf(l) === -1; })[0];
+      var main = mainLayer();
       var st = main && main.getSource() && main.getSource().getState();
       if (st === 'error' && n < 2) { say('Reloading ' + city.name + '...'); selectCity(city.name, function () { watchLoad(city, n + 1); }); }
       else if (st === 'loading' && n < 2) { watchLoad(city, n + 1); }
@@ -159,7 +163,6 @@
         if (mc && mt && !mc.classList.contains('hidden')) { mt.click(); }
       }, 500);
     }
-    syncBoxes();
     // cadastral (khasra) layers draw above master plans, even when chosen as the main layer
     if (map) {
       var mine = Object.keys(extras).map(function (k) { return extras[k]; });
@@ -167,6 +170,8 @@
         if (l instanceof ol.layer.WebGLTile && mine.indexOf(l) === -1) { l.setZIndex(city && city.top ? 10 : 0); }
       });
     }
+    if (city) { var ml = mainLayer(); if (ml) { ml.setVisible(true); } }
+    renderLayers();
     render(city);
     if (city && city.legendUrl && window.innerWidth > 900) { setOpen(true); } else { setOpen(false); }
   }
@@ -183,44 +188,82 @@
     return new ol.source.GeoTIFF({ sources: [{ url: c.cogUrl }], interpolate: true, normalize: true, wrapX: false });
   }
 
+  var EXTRA_OPACITY = 0.85;
+  function mainLayer() {
+    var mine = Object.keys(extras).map(function (k) { return extras[k]; });
+    return map && map.getLayers().getArray().filter(function (l) { return l instanceof ol.layer.WebGLTile && mine.indexOf(l) === -1; })[0];
+  }
+
   function setExtra(name, on) {
     var c = cities[name];
     if (!map || !c) { return; }
     if (on && !extras[name]) {
-      var lyr = new ol.layer.WebGLTile({ source: makeSource(c), opacity: parseFloat($('opacity-slider').value), zIndex: c.top ? 10 : 0 });
+      var lyr = new ol.layer.WebGLTile({ source: makeSource(c), opacity: EXTRA_OPACITY, zIndex: c.top ? 10 : 0 });
       map.addLayer(lyr); extras[name] = lyr;
       var sw = $('swipe-toggle');
-      if (sw && sw.classList.contains('active')) { sw.click(); say('Swipe compare is off while several plans are shown.'); }
+      if (sw && sw.classList.contains('active')) { sw.click(); say('Swipe compare is off while several layers are shown.'); }
     } else if (!on && extras[name]) {
+      var src = extras[name].getSource();
       map.removeLayer(extras[name]); delete extras[name];
+      if (src && src.dispose) { setTimeout(function () { src.dispose(); }, 1000); }
     }
-    syncBoxes();
+    renderLayers();
   }
 
-  function syncBoxes() {
-    if (!extrasBox) { return; }
-    Array.prototype.forEach.call(extrasBox.querySelectorAll('input'), function (b) {
-      b.checked = !!extras[b.value];
-      b.disabled = !!(current && current.name === b.value);
-    });
-    var n = Object.keys(extras).length;
-    extrasBox.querySelector('summary').textContent = 'More plans at once' + (n ? ' (' + n + ' added)' : '');
+  function addLayer(name) {
+    if (!cities[name] || extras[name] || (current && current.name === name)) { return; }
+    if (!current) { selectCity(name); } else { setExtra(name, true); }
   }
 
-  function buildExtras() {
-    extrasBox = el('details', { id: 'mpm-extras' });
-    extrasBox.innerHTML = '<summary>More plans at once</summary><p class="hint">Tick plans to show them together with the selected city, for example neighbouring cities that meet at a border.</p><div class="mpm-list"></div>';
-    var box = extrasBox.querySelector('.mpm-list');
-    list.slice().sort(function (a, b) { return (b.legendUrl ? 1 : 0) - (a.legendUrl ? 1 : 0) || a.name.localeCompare(b.name); }).forEach(function (c) {
-      var lab = el('label', {}, '<input type="checkbox" value="' + esc(c.name) + '"> ' + esc(c.name));
-      lab.querySelector('input').addEventListener('change', function (e) { setExtra(c.name, e.target.checked); });
-      box.appendChild(lab);
-    });
-    var wrap = $('city-search-wrapper');
-    wrap.after(extrasBox);
-    $('opacity-slider').addEventListener('input', function (e) {
-      Object.keys(extras).forEach(function (k) { extras[k].setOpacity(parseFloat(e.target.value)); });
-    });
+  function removeLayer(name) {
+    if (extras[name]) { setExtra(name, false); return; }
+    var ml = mainLayer(); if (ml) { ml.setVisible(false); }
+    $('city-search').value = ''; onCity('');
+  }
+
+  // layers panel: one row per active layer, each with its own visibility, opacity, legend and remove button.
+  // The primary layer's slider is upstream's own #opacity-slider (upstream resets opacity from it on every city load).
+  function renderLayers() {
+    var box = $('mpm-layers'); if (!box) { return; }
+    var slider = $('opacity-slider'); $('mpm-slider-park').appendChild(slider); box.innerHTML = '';
+    function row(name, layer, isMain) {
+      var r = el('div', { 'class': 'mpm-layer' + (isMain ? ' main' : '') });
+      r.innerHTML = '<label class="eye" title="Show or hide"><input type="checkbox"></label><div class="nm"><b></b><small></small></div><button type="button" class="lg" title="Legend, source and accuracy">i</button><button type="button" class="x" title="Remove layer">&#10005;</button><div class="op"></div>';
+      r.querySelector('b').textContent = name; r.querySelector('small').textContent = isMain ? 'primary layer' : 'overlay';
+      var chk = r.querySelector('input'); chk.checked = layer ? layer.getVisible() : true;
+      chk.addEventListener('change', function () { var l = isMain ? mainLayer() : extras[name]; if (l) { l.setVisible(chk.checked); } });
+      r.querySelector('.lg').addEventListener('click', function () { render(cities[name]); setOpen(true); });
+      r.querySelector('.x').addEventListener('click', function () { removeLayer(name); });
+      var op = r.querySelector('.op');
+      if (isMain) { op.appendChild(slider); } else {
+        var s = el('input', { type: 'range', min: 0, max: 1, step: 0.01, value: layer.getOpacity(), title: 'Opacity' });
+        s.addEventListener('input', function () { layer.setOpacity(parseFloat(s.value)); }); op.appendChild(s);
+      }
+      box.appendChild(r);
+    }
+    if (current) { row(current.name, mainLayer(), true); }
+    Object.keys(extras).forEach(function (n) { row(n, extras[n], false); });
+    if (!box.children.length) { box.appendChild(el('p', { 'class': 'mpm-empty' }, 'No layer yet. Add one below.')); }
+    var sel = $('mpm-add');
+    Array.prototype.forEach.call(sel.options, function (o) { if (o.value) { o.disabled = !!extras[o.value] || !!(current && current.name === o.value); } });
+  }
+
+  function groupOf(c) {
+    if (/khasra/i.test(c.name)) { return 'Khasra (plots)'; }
+    if (/zone/i.test(c.name)) { return 'Zones'; }
+    return c._own ? 'Master plans' : 'Other cities';
+  }
+
+  function buildLayersUI() {
+    var sec = el('section', { id: 'mpm-layerbox' });
+    sec.innerHTML = '<label>Layers</label><div id="mpm-layers"></div><select id="mpm-add" aria-label="Add a layer"></select><div id="mpm-slider-park" hidden></div>';
+    $('city-search-wrapper').after(sec); $('city-search-wrapper').classList.add('mpm-hidden');
+    var sel = $('mpm-add'), groups = {};
+    sel.appendChild(new Option('+ Add a layer', ''));
+    ['Master plans', 'Zones', 'Khasra (plots)', 'Other cities'].forEach(function (g) { groups[g] = el('optgroup', { label: g }); sel.appendChild(groups[g]); });
+    list.slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (c) { groups[groupOf(c)].appendChild(new Option(c.name, c.name)); });
+    sel.addEventListener('change', function () { addLayer(sel.value); sel.value = ''; });
+    renderLayers();
   }
 
   // ---------- Search Address loads the plans covering the place ----------
@@ -284,8 +327,15 @@
 
   Promise.all([fetch('cities.json').then(function (r) { return r.json(); }), fetch('mpm/legends.json').then(function (r) { return r.json(); })]).then(function (res) {
     var d = res[0], extra = res[1];
-    d.cities.forEach(function (c) { var m = Object.assign({}, c, extra[c.name] || {}); cities[c.name] = m; list.push(m); });
-    branding(); buildUI(); buildExtras(); render(null); watch(); hookSearch();
+    d.cities.forEach(function (c) { var m = Object.assign({}, c, extra[c.name] || {}); m._own = !!extra[c.name]; cities[c.name] = m; list.push(m); });
+    branding(); buildUI(); buildLayersUI(); render(null); watch(); hookSearch();
     setTimeout(deepLink, 600);
   });
+  // cache: maps rarely change, so a service worker keeps plans, tiles and app files on the device (see sw.js). ?nosw=1 switches it off.
+  if ('serviceWorker' in navigator) {
+    if (/[?&]nosw=1/.test(location.search)) {
+      navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { r.unregister(); }); });
+      caches.keys().then(function (ks) { ks.forEach(function (k) { caches.delete(k); }); });
+    } else { window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () { /* optional */ }); }); }
+  }
 })();
