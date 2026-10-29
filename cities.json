@@ -19,6 +19,15 @@
       "zoom": 11
     },
     {
+      "name": "Sikri Khurd khasra (Modinagar)",
+      "cogUrl": "City-Tiles/SikriKhurd_khasra_COG.tif",
+      "center": [
+        77.565,
+        28.815
+      ],
+      "zoom": 14
+    },
+    {
       "name": "Navi Mumbai (CIDCO Nodal Plan)",
       "cogUrl": "https://pub-5d7a831c335c4d83b8b0f8ebe750e175.r2.dev/City-Tiles/Navi_Mumbai_CIDCO.tif",
       "center": [

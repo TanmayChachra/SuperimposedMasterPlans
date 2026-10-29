@@ -327,5 +327,18 @@
       78.1117,
       29.2777
     ]
+  },
+  "Sikri Khurd khasra (Modinagar)": {
+    "bounds": [
+      77.55073,
+      28.80152,
+      77.57895,
+      28.82866
+    ],
+    "legendTitle": "Village cadastral (khasra) map of Sikri Khurd, Modinagar. Red numbers are khasra (plot) numbers; thin black lines are plot boundaries; cream is mapped land.",
+    "source": "UP Bhu-Naksha (Revenue Department, Uttar Pradesh)",
+    "sourceUrl": "https://upbhunaksha.gov.in/",
+    "note": "Exported from the portal and placed on the map by hand using 12 control points (about 20 to 40 m error), so plot lines can sit tens of metres off. Reference only, not a legal copy: the portal itself says areas in the khatauni (ROR) prevail, and certified copies come from the tehsil office.",
+    "top": true
   }
 }

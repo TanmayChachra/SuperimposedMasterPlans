@@ -139,6 +139,13 @@
       }, 500);
     }
     syncBoxes();
+    // cadastral (khasra) layers draw above master plans, even when chosen as the main layer
+    if (map) {
+      var mine = Object.keys(extras).map(function (k) { return extras[k]; });
+      map.getLayers().getArray().forEach(function (l) {
+        if (l instanceof ol.layer.WebGLTile && mine.indexOf(l) === -1) { l.setZIndex(city && city.top ? 10 : 0); }
+      });
+    }
     render(city);
     if (city && city.legendUrl && window.innerWidth > 900) { setOpen(true); } else { setOpen(false); }
   }
@@ -159,7 +166,7 @@
     var c = cities[name];
     if (!map || !c) { return; }
     if (on && !extras[name]) {
-      var lyr = new ol.layer.WebGLTile({ source: makeSource(c), opacity: parseFloat($('opacity-slider').value) });
+      var lyr = new ol.layer.WebGLTile({ source: makeSource(c), opacity: parseFloat($('opacity-slider').value), zIndex: c.top ? 10 : 0 });
       map.addLayer(lyr); extras[name] = lyr;
       var sw = $('swipe-toggle');
       if (sw && sw.classList.contains('active')) { sw.click(); say('Swipe compare is off while several plans are shown.'); }
