@@ -49,3 +49,20 @@
 #mpm-extras .mpm-list { max-height: 170px; overflow: auto; border: 1px solid var(--input-border); border-radius: 8px; padding: 4px 8px; background: var(--input-bg); }
 #mpm-extras label { display: block; margin: 0; padding: 3px 0; font-weight: 400; color: var(--text-color); cursor: pointer; }
 #mpm-extras input:disabled + * , #mpm-extras label:has(input:disabled) { opacity: .45; }
+
+/* the comment button is hidden, so hide its row (label) too */
+.fab-row:has(#add-comment-fab) { display: none !important; }
+
+/* phones */
+@media (max-width: 600px) {
+  .fab-label { display: none !important; }
+  #bottom-left-controls { bottom: max(14px, env(safe-area-inset-bottom)); }
+  #mpm-extras label { padding: 9px 0; font-size: 14px; }
+  #mpm-extras .mpm-list { max-height: 38vh; }
+  #mpm-extras summary { padding: 6px 0; }
+  #mpm-legend { padding-bottom: env(safe-area-inset-bottom); }
+  #mpm-legend header { padding: 14px; }
+  #mpm-legend header button { font-size: 22px; padding: 4px 10px; }
+  #mpm-legend-tab { padding: 18px 10px; }
+  #mpm-toast { bottom: 90px; }
+}

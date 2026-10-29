@@ -33,8 +33,6 @@
     var h = document.querySelector('#menu-content h2');
     if (h) {
       h.textContent = 'Superimposed Master Plans';
-      h.after(el('p', { 'class': 'mpm-credit' },
-        'Fork of <a href="https://github.com/datsvarun/master-plan-viewer" target="_blank" rel="noopener">Master Plan Viewer</a> by Varun Phadke.'));
     }
     document.title = 'Superimposed Master Plans';
     Array.prototype.forEach.call(document.querySelectorAll('label'), function (l) {
@@ -42,7 +40,7 @@
     });
     var modal = document.querySelector('#info-modal .modal-content');
     if (modal) {
-      modal.appendChild(el('p', {}, '<strong>About this version:</strong> a public fork of Master Plan Viewer with added plans, map legends and a multi-plan view. ' +
+      modal.appendChild(el('p', {}, '<strong>About this version:</strong> a public fork of <a href="https://github.com/datsvarun/master-plan-viewer" target="_blank" rel="noopener">Master Plan Viewer</a> by Varun Phadke, with added plans, map legends and a multi-plan view. ' +
         'Overlays are scanned government maps placed on the map by control points, so treat them as zone-level only (tens of metres of error). ' +
         'Comments are turned off here. Source and accuracy notes for each plan are in the Legend panel.'));
     }
@@ -116,6 +114,12 @@
     if (city === current) { return; }
     current = city;
     if (city && extras[city.name]) { setExtra(city.name, false); }
+    if (city && window.innerWidth <= 600) {   // phones: get the big menu panel out of the way of the map
+      setTimeout(function () {
+        var mc = $('menu-content'), mt = $('menu-toggle');
+        if (mc && mt && !mc.classList.contains('hidden')) { mt.click(); }
+      }, 500);
+    }
     syncBoxes();
     render(city);
     if (city && city.legendUrl && window.innerWidth > 900) { setOpen(true); } else { setOpen(false); }
