@@ -2,6 +2,7 @@
 
 Newest first. One line per change that visitors or maintainers can notice. Each feature is built on a `feature/*` branch and merged into `site` with `--no-ff`.
 
+- 2026-10-29 One-page plot report PDF, Khatauni button lands on Bhulekh district list and copies the village, village picker from Bhulekh lists, English village names. Branch `feature/plot-report`.
 - 2026-10-29 Click-for-info card (village, zone, portal links), share link + WhatsApp + client view + PDF extract, plot report feasibility. Branch `feature/plot-info-sharing`.
 - 2026-10-29 Layer re-ordering (up/down), one consistent palette and monochrome icons, second khasra layer for the 38 Ghaziabad-tehsil villages (Muradnagar side). Branch `feature/layer-order-theme`.
 - 2026-10-29 Internal Silverleaf Buildcon UI, per-layer opacity/visibility/remove, service worker cache, About text without creator name, noindex. Branch `feature/internal-ui-cache`.

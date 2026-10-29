@@ -69,3 +69,10 @@ The maps barely change, so a service worker keeps them on the device after the f
 - PDF: map extract plus coordinates, layer list with sources and the disclaimer (jsPDF 2.5.1 from cdnjs, loaded on demand). Verified in desktop Chrome with a WebGL layer; Hindi names are left out of the PDF (no Devanagari font).
 - If you add villages, rerun `mk_idgrid.py` and commit the two files in `mpm/data/`.
 - Feasibility of the one-page plot report: `docs/PLOT_REPORT_FEASIBILITY.md`.
+
+## One-page plot report and Bhulekh help
+- Click the map, then **One-page report**: A4 PDF with village (English and portal code), tehsil, khasra number you typed, coordinates, nearest RRTS and Delhi Metro station (straight line, from `mpm/data/landmarks.json`), planning zones from the visible layers, a wider and a close-up map with the selected point ringed, a 9-item buying checklist with tick boxes, links and the disclaimer. Verified by generating one in Chrome and reading the PDF back.
+- **Open Khatauni** goes to `https://upbhulekh.gov.in/#/selection` (the district list; the home page and service click are skipped) and copies the village name for the Search Village box. Bhulekh keeps district, tehsil and village in page state (the URL stays `#/selection`), so it cannot be pre-filled by link. **Bhu-Naksha** copies the village code. Owner data is never fetched or stored here.
+- Villages not on the khasra map (Kajampur, Machhri, Sikri Kalan and the other 11) are still in Bhulekh's records, so the card offers a village picker built from Bhulekh's lists (`mpm/data/bhulekh_villages.json`: Modinagar 127, Ghaziabad 85, Loni 49 villages, read 2026-10-29). Bhu-Naksha simply has no digitised map for them.
+- Master plan land use (Ghaziabad 2031) stays indicative: it is shown only when the click colour is close to a legend colour, otherwise "no clear match".
+- Chrome blocks repeated automatic downloads from one page, so test the PDF once per tab.

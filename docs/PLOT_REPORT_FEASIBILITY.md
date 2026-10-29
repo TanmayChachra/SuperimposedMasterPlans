@@ -1,5 +1,7 @@
 # One-page plot report: feasibility (2026-10-29)
 
+Update: the report is now built (see MPM.md, 'One-page plot report'). The table below shows what is automated and what stays a manual check.
+
 Goal: pick a plot on the map and get a one-page sheet an agent can hand a client. Verdict: feasible, in phases. The map extract, village, zone and distances can be automated today. Owner records cannot, and should not be.
 
 | Item on the sheet | Automatable? | How / limit |
