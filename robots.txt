@@ -1,3 +1,2 @@
 User-agent: *
-Allow: /
-Sitemap: https://tanmaychachra.github.io/SuperimposedMasterPlans/sitemap.xml
+Disallow: /
