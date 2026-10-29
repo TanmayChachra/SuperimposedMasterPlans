@@ -130,7 +130,9 @@
   function onCity(name) {
     var city = cities[name] || null;
     if (city === current) { return; }
+    if (current && current.group) { groupSet(current, false); }
     current = city;
+    if (city && city.group) { groupSet(city, true); }
     if (city && extras[city.name]) { setExtra(city.name, false); }
     if (city && window.innerWidth <= 600) {   // phones: get the big menu panel out of the way of the map
       setTimeout(function () {
@@ -156,6 +158,36 @@
     setInterval(function () { if (inp && inp !== document.activeElement) { onCity(inp.value.trim()); } }, 300);
   }
 
+  // ---------- village groups (many small COGs, loaded only while in view) ----------
+  var groups = {};
+  function groupSync(c, g) {
+    var v = map.getView(), z = v.getZoom(), base = c.group.replace('index.json', '');
+    var e = ol.proj.transformExtent(v.calculateExtent(map.getSize()), 'EPSG:3857', 'EPSG:4326');
+    g.idx.forEach(function (i) {
+      var b = i.bounds, seen = z >= 12.5 && !(b[0] > e[2] || b[2] < e[0] || b[1] > e[3] || b[3] < e[1]);
+      if (seen && !g.layers[i.code]) {
+        g.layers[i.code] = new ol.layer.WebGLTile({ source: new ol.source.GeoTIFF({ sources: [{ url: base + i.code + '.tif' }], interpolate: true, normalize: true, wrapX: false }),
+          opacity: parseFloat($('opacity-slider').value), zIndex: 10 });
+        map.addLayer(g.layers[i.code]);
+      } else if (!seen && g.layers[i.code]) { map.removeLayer(g.layers[i.code]); delete g.layers[i.code]; }
+    });
+  }
+  function groupSet(c, on) {
+    var g = groups[c.name];
+    if (on && !g && map) {
+      g = groups[c.name] = { layers: {} };
+      fetch(c.group).then(function (r) { return r.json(); }).then(function (idx) {
+        g.idx = idx; g.h = function () { groupSync(c, g); }; map.on('moveend', g.h); g.h();
+      });
+      if (map.getView().getZoom() < 12.5) { say('Zoom in to see khasra maps.'); }
+    } else if (!on && g) {
+      if (g.h) { map.un('moveend', g.h); }
+      Object.keys(g.layers).forEach(function (k) { map.removeLayer(g.layers[k]); });
+      delete groups[c.name];
+    }
+  }
+  function groupOpacity(c, o) { var g = groups[c.name]; if (g) { Object.keys(g.layers).forEach(function (k) { g.layers[k].setOpacity(o); }); } }
+
   // ---------- several plans at once ----------
   function makeSource(c) {
     if (c.xyzUrl) { return new ol.source.XYZ({ url: c.xyzUrl, crossOrigin: 'anonymous' }); }
@@ -165,7 +197,11 @@
   function setExtra(name, on) {
     var c = cities[name];
     if (!map || !c) { return; }
-    if (on && !extras[name]) {
+    if (c.group) {
+      groupSet(c, on);
+      if (on) { extras[name] = { setOpacity: function (o) { groupOpacity(c, o); } }; } else { delete extras[name]; }
+      var sg = $('swipe-toggle'); if (on && sg && sg.classList.contains('active')) { sg.click(); }
+    } else if (on && !extras[name]) {
       var lyr = new ol.layer.WebGLTile({ source: makeSource(c), opacity: parseFloat($('opacity-slider').value), zIndex: c.top ? 10 : 0 });
       map.addLayer(lyr); extras[name] = lyr;
       var sw = $('swipe-toggle');

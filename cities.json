@@ -28,13 +28,13 @@
       "zoom": 11
     },
     {
-      "name": "Sikri Khurd khasra (Modinagar)",
-      "cogUrl": "City-Tiles/SikriKhurd_khasra_COG.tif",
+      "name": "Modinagar khasra (92 villages)",
+      "cogUrl": "City-Tiles/khasra/_blank.tif",
       "center": [
-        77.565,
-        28.815
+        77.557,
+        28.825
       ],
-      "zoom": 14
+      "zoom": 13
     },
     {
       "name": "Navi Mumbai (CIDCO Nodal Plan)",

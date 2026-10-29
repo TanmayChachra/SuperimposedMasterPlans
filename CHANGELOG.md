@@ -2,6 +2,7 @@
 
 Newest first. One line per change that visitors or maintainers can notice. Each feature is built on a `feature/*` branch and merged into `site` with `--no-ff`.
 
+- 2026-10-29 Modinagar khasra from Bhu-Naksha (92 villages, loaded on demand), replaces the hand-placed Sikri Khurd layer. Branch `feature/modinagar-khasra`.
 - 2026-10-29 Ghaziabad zones layer (draft 2031, zones 1 to 8, RRTS). Branch `feature/ghaziabad-zones-2031`.
 - 2026-10-29 Sikri Khurd khasra layer, cadastral layers drawn above plans.
 - 2026-10-29 English/Hindi legend toggle for Ghaziabad plan.

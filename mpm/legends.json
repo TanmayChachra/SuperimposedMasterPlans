@@ -328,19 +328,6 @@
       29.2777
     ]
   },
-  "Sikri Khurd khasra (Modinagar)": {
-    "bounds": [
-      77.55073,
-      28.80152,
-      77.57895,
-      28.82866
-    ],
-    "legendTitle": "Village cadastral (khasra) map of Sikri Khurd, Modinagar. Red numbers are khasra (plot) numbers; thin black lines are plot boundaries; cream is mapped land.",
-    "source": "UP Bhu-Naksha (Revenue Department, Uttar Pradesh)",
-    "sourceUrl": "https://upbhunaksha.gov.in/",
-    "note": "Exported from the portal and placed on the map by hand using 12 control points (about 20 to 40 m error), so plot lines can sit tens of metres off. Reference only, not a legal copy: the portal itself says areas in the khatauni (ROR) prevail, and certified copies come from the tehsil office.",
-    "top": true
-  },
   "Ghaziabad zones (GDA 2031 draft)": {
     "bounds": [
       77.1963,
@@ -353,5 +340,19 @@
     "source": "Ghaziabad Development Authority, draft Master Plan 2031 zone boundary sheet (DDF Consultants, Nov 2022)",
     "sourceUrl": "https://ntender.gdaghaziabad.in/uploads/listing/af01d_Zone%20Boundary%20After%20Smiti%20.pdf",
     "note": "This shows zone boundaries only, not land use. Zonal plans give the detailed land use for each zone; I found none published for 2031. Placed using the RRTS station dots (about 50 m error). Zone fills are semi-transparent so they can sit over the master plan."
+  },
+  "Modinagar khasra (92 villages)": {
+    "group": "City-Tiles/khasra/index.json",
+    "bounds": [
+      77.40239,
+      28.72103,
+      77.71116,
+      28.92982
+    ],
+    "top": true,
+    "legendTitle": "Village cadastral (khasra) maps for 92 villages of Modinagar tehsil. Red numbers are khasra (plot) numbers, black lines are plot boundaries, cream is mapped land. Zoom in (about zoom 13 or closer) and villages load as you pan.",
+    "source": "UP Bhu-Naksha (Revenue Department, Uttar Pradesh)",
+    "sourceUrl": "https://upbhunaksha.gov.in/",
+    "note": "Drawn from the portal's own georeferenced map service (EPSG:32644), so positions are as accurate as the portal's maps (the portal says they were fitted to satellite imagery, with small errors possible). Reference only, not a legal copy: the khatauni (ROR) area prevails, and certified copies come from the tehsil office. 9 of 101 tehsil villages are not included yet."
   }
 }
