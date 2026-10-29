@@ -6,7 +6,7 @@
  * - this site's files : stale-while-revalidate (instant, refreshed in the background for next time).
  * RULES: if you REPLACE a .tif under the same name, bump DATA_V (or rename the file) or visitors get mixed old/new blocks.
  *        Bump APP_V to force everyone onto new app files. ?nosw=1 on the page URL removes the worker and its caches. */
-const APP_V = 'a1', DATA_V = 'd1', TILE_V = 't1';
+const APP_V = 'a2', DATA_V = 'd1', TILE_V = 't1';
 const APP = 'mpm-app-' + APP_V, DATA = 'mpm-data-' + DATA_V, TILES = 'mpm-tiles-' + TILE_V;
 
 self.addEventListener('install', () => self.skipWaiting());

@@ -329,7 +329,7 @@
 
   function deepLink() {
     var q = new URLSearchParams(location.search), want = q.get('city'), plus = q.get('plus');
-    if (!want) { return; }
+    if (!want || q.get('L')) { return; }
     selectCity(want, function () {
       (plus ? plus.split(',') : []).forEach(function (frag) {
         var c = list.find(function (x) { return x.name.toLowerCase().indexOf(frag.trim().toLowerCase()) !== -1; });
@@ -338,10 +338,19 @@
     });
   }
 
+  // small surface for mpm/tools.js (click info, sharing, PDF)
+  window.mpm = {
+    get map() { return map; }, cities: cities, extras: extras, say: say, layerOf: layerOf, mainLayer: mainLayer, selectCity: selectCity, setExtra: setExtra, renderLayers: renderLayers,
+    get current() { return current; }, get order() { return order; },
+    setOrder: function (a) { order = a.filter(function (n) { return layerOf(n); }); applyOrder(); renderLayers(); },
+    ready: false
+  };
+
   Promise.all([fetch('cities.json').then(function (r) { return r.json(); }), fetch('mpm/legends.json').then(function (r) { return r.json(); })]).then(function (res) {
     var d = res[0], extra = res[1];
     d.cities.forEach(function (c) { var m = Object.assign({}, c, extra[c.name] || {}); m._own = !!extra[c.name]; cities[c.name] = m; list.push(m); });
     branding(); buildUI(); buildLayersUI(); render(null); watch(); hookSearch();
+    window.mpm.ready = true; document.dispatchEvent(new Event('mpm:ready'));
     setTimeout(deepLink, 600);
   });
   // cache: maps rarely change, so a service worker keeps plans, tiles and app files on the device (see sw.js). ?nosw=1 switches it off.
