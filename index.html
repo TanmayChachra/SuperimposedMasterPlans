@@ -13,7 +13,7 @@
   <!-- Open Graph for social sharing -->
   <meta property="og:title" content="Master Plan Viewer">
   <meta property="og:description" content="Interactive viewer for georeferenced master plans with GIS analysis capabilities.">
-  <meta property="og:url" content="https://datsvarun.github.io/master-plan-viewer/">
+  <meta property="og:url" content="https://tanmaychachra.github.io/MasterPlanMapping/">
   <meta property="og:type" content="website">
 
 <!-- Favicon (optional but recommended) -->
@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@10.9.0/ol.css">
   <!-- App CSS -->
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mpm/mpm.css">
 </head>
 
 <body>
@@ -143,9 +144,10 @@
   <!-- India Boundary Corrector -->
   <script src="https://cdn.jsdelivr.net/npm/@india-boundary-corrector/openlayers-layer/dist/index.global.js"></script>
   <!-- Supabase JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="mpm/stub-supabase.js"></script>
   <!-- App JS -->
   <script src="main.js"></script>
+  <script src="mpm/mpm.js"></script>
 
 </body>
 

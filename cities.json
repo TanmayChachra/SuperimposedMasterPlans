@@ -1,11 +1,20 @@
 {
   "cities": [
     {
+      "name": "Ghaziabad (GDA 2031)",
+      "cogUrl": "City-Tiles/Ghaziabad_2031_COG.tif",
+      "center": [
+        77.4394,
+        28.7634
+      ],
+      "zoom": 11
+    },
+    {
       "name": "Navi Mumbai (CIDCO Nodal Plan)",
       "cogUrl": "https://pub-5d7a831c335c4d83b8b0f8ebe750e175.r2.dev/City-Tiles/Navi_Mumbai_CIDCO.tif",
       "center": [
         73.0169,
-        19.0330
+        19.033
       ],
       "zoom": 12
     },
@@ -296,8 +305,7 @@
         19.3919
       ],
       "zoom": 13
-    }
-    ,
+    },
     {
       "name": "Srinagar",
       "cogUrl": "https://pub-5d7a831c335c4d83b8b0f8ebe750e175.r2.dev/City-Tiles/Srinagar.tif",

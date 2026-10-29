@@ -1,0 +1,16 @@
+{
+  "Ghaziabad (GDA 2031)": {
+    "legendUrl": "mpm/legends/ghaziabad-2031.png",
+    "legendTitle": "Ghaziabad + Modinagar + Loni Master Plan 2031 (revised, GIS based), scale 1:52,000. Legend is in Hindi, as printed on the sheet.",
+    "source": "Ghaziabad Development Authority, Master Plan 2031 map",
+    "sourceUrl": "https://gdaghaziabad.in/",
+    "note": "Placed on the map by 16 control points (about 40 m RMSE). Zone-level accuracy only. Check the gazette notification before relying on it legally."
+  },
+  "Delhi": {
+    "legendUrl": "mpm/legends/delhi-2041.png",
+    "legendTitle": "Draft Land Use Plan for Delhi 2041 (legend cropped from the sheet)",
+    "source": "Delhi Development Authority, draft MPD 2041",
+    "sourceUrl": "https://dda.gov.in/master-plan-2041-draft",
+    "note": "Overlay file is hosted by the upstream viewer. Draft plan, not confirmed as notified."
+  }
+}
