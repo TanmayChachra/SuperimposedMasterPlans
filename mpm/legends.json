@@ -340,5 +340,18 @@
     "sourceUrl": "https://upbhunaksha.gov.in/",
     "note": "Exported from the portal and placed on the map by hand using 12 control points (about 20 to 40 m error), so plot lines can sit tens of metres off. Reference only, not a legal copy: the portal itself says areas in the khatauni (ROR) prevail, and certified copies come from the tehsil office.",
     "top": true
+  },
+  "Ghaziabad zones (GDA 2031 draft)": {
+    "bounds": [
+      77.1963,
+      28.5905,
+      77.7076,
+      28.9744
+    ],
+    "legendUrl": "mpm/legends/ghaziabad-zones-2031.png",
+    "legendTitle": "Planning zones 1 to 8 of the Ghaziabad / Loni / Modinagar area under the draft Master Plan 2031, with RRTS alignment, stations and influence zones. Scale 1:50,000, English as printed.",
+    "source": "Ghaziabad Development Authority, draft Master Plan 2031 zone boundary sheet (DDF Consultants, Nov 2022)",
+    "sourceUrl": "https://ntender.gdaghaziabad.in/uploads/listing/af01d_Zone%20Boundary%20After%20Smiti%20.pdf",
+    "note": "This shows zone boundaries only, not land use. Zonal plans give the detailed land use for each zone; I found none published for 2031. Placed using the RRTS station dots (about 50 m error). Zone fills are semi-transparent so they can sit over the master plan."
   }
 }
