@@ -28,11 +28,11 @@
       "zoom": 11
     },
     {
-      "name": "Modinagar khasra (92 villages)",
-      "cogUrl": "City-Tiles/khasra/_blank.tif",
+      "name": "Modinagar khasra (101 villages)",
+      "cogUrl": "City-Tiles/Modinagar_khasra_COG.tif",
       "center": [
-        77.557,
-        28.825
+        77.52,
+        28.83
       ],
       "zoom": 13
     },

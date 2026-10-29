@@ -341,18 +341,17 @@
     "sourceUrl": "https://ntender.gdaghaziabad.in/uploads/listing/af01d_Zone%20Boundary%20After%20Smiti%20.pdf",
     "note": "This shows zone boundaries only, not land use. Zonal plans give the detailed land use for each zone; I found none published for 2031. Placed using the RRTS station dots (about 50 m error). Zone fills are semi-transparent so they can sit over the master plan."
   },
-  "Modinagar khasra (92 villages)": {
-    "group": "City-Tiles/khasra/index.json",
+  "Modinagar khasra (101 villages)": {
     "bounds": [
-      77.40239,
-      28.72103,
-      77.71116,
-      28.92982
+      77.40077,
+      28.71473,
+      77.71331,
+      28.93606
     ],
     "top": true,
-    "legendTitle": "Village cadastral (khasra) maps for 92 villages of Modinagar tehsil. Red numbers are khasra (plot) numbers, black lines are plot boundaries, cream is mapped land. Zoom in (about zoom 13 or closer) and villages load as you pan.",
+    "legendTitle": "Village cadastral (khasra) maps for all 101 villages of Modinagar tehsil. Red numbers are khasra (plot) numbers, black lines are plot boundaries, cream is mapped land. Zoom in to read the numbers.",
     "source": "UP Bhu-Naksha (Revenue Department, Uttar Pradesh)",
     "sourceUrl": "https://upbhunaksha.gov.in/",
-    "note": "Drawn from the portal's own georeferenced map service (EPSG:32644), so positions are as accurate as the portal's maps (the portal says they were fitted to satellite imagery, with small errors possible). Reference only, not a legal copy: the khatauni (ROR) area prevails, and certified copies come from the tehsil office. 9 of 101 tehsil villages are not included yet."
+    "note": "Drawn from the portal's own georeferenced map service (EPSG:32644), so positions are as accurate as the portal's maps (the portal says they were fitted to satellite imagery, with small errors possible). Reference only, not a legal copy: the khatauni (ROR) area prevails, and certified copies come from the tehsil office. All 101 tehsil villages are included."
   }
 }
