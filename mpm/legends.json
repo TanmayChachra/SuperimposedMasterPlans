@@ -353,5 +353,18 @@
     "source": "UP Bhu-Naksha (Revenue Department, Uttar Pradesh)",
     "sourceUrl": "https://upbhunaksha.gov.in/",
     "note": "Drawn from the portal's own georeferenced map service (EPSG:32644), so positions are as accurate as the portal's maps (the portal says they were fitted to satellite imagery, with small errors possible). Reference only, not a legal copy: the khatauni (ROR) area prevails, and certified copies come from the tehsil office. All 101 tehsil villages are included."
+  },
+  "Khasra: Ghaziabad tehsil (38 villages)": {
+    "bounds": [
+      77.38608,
+      28.62917,
+      77.62037,
+      28.79024
+    ],
+    "top": true,
+    "legendTitle": "Village cadastral (khasra) maps for the 38 villages the portal lists under Ghaziabad tehsil (district 140, tehsil 000739), which includes the Muradnagar side (Jalalabad, Masuri, Nurpur, Duhai, Morta and others). Zoom in to read the numbers.",
+    "source": "UP Bhu-Naksha (Revenue Department, Uttar Pradesh)",
+    "sourceUrl": "https://upbhunaksha.gov.in/",
+    "note": "Same source, method and cautions as the Modinagar khasra layer. Towns and built-up areas (for example Modinagar and Muradnagar towns) and some villages (for example Kajampur and Kalchhina) are not in the portal's village lists, so they stay blank. Reference only, not a legal copy."
   }
 }

@@ -37,6 +37,15 @@
       "zoom": 13
     },
     {
+      "name": "Khasra: Ghaziabad tehsil (38 villages)",
+      "cogUrl": "City-Tiles/Ghaziabad_tehsil_khasra_COG.tif",
+      "center": [
+        77.5,
+        28.71
+      ],
+      "zoom": 13
+    },
+    {
       "name": "Navi Mumbai (CIDCO Nodal Plan)",
       "cogUrl": "https://pub-5d7a831c335c4d83b8b0f8ebe750e175.r2.dev/City-Tiles/Navi_Mumbai_CIDCO.tif",
       "center": [
