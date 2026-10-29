@@ -62,3 +62,10 @@ The maps barely change, so a service worker keeps them on the device after the f
 - Each active layer is a row with its own show/hide box, opacity slider, `i` button (legend, source, accuracy) and remove button. The primary layer's slider is upstream's own `#opacity-slider` (upstream resets opacity from it on every city load); overlays have their own.
 - "+ Add a layer" is a grouped picker (master plans, zones, khasra, other cities). The first layer chosen becomes the primary layer, later ones are overlays (default opacity 0.85). Removing the primary layer hides it, and the next layer added becomes primary.
 - Branding: Silverleaf Buildcon header, green theme in `mpm/mpm.css` (CSS variables at the top of the theme block), `noindex` meta and `robots.txt` Disallow since this is an internal tool. The About text no longer names the upstream author; credit stays in this file and the repo history.
+
+## Click info, sharing, client view (mpm/tools.js)
+- Click the map: card with lat/lon, village (from `mpm/data/villages_grid.png` + `villages.json`, built by `mk_idgrid.py`), planning zone per visible layer (`mpm/data/zonecolors.json`: zones are exact, the Ghaziabad plan is the two closest legend colours), and links to Bhu-Naksha and Bhulekh with a "Copy details" button. No owner data is fetched or stored.
+- Share bar: Copy link, WhatsApp, Client link, PDF. The link stores layers, order, opacity, visibility, map position and satellite on/off (`?L=...&P=...&v=lon,lat,zoom&sat=1`). `&client=1` gives a read-only view (no search, add, remove, move, swipe).
+- PDF: map extract plus coordinates, layer list with sources and the disclaimer (jsPDF 2.5.1 from cdnjs, loaded on demand). Verified in desktop Chrome with a WebGL layer; Hindi names are left out of the PDF (no Devanagari font).
+- If you add villages, rerun `mk_idgrid.py` and commit the two files in `mpm/data/`.
+- Feasibility of the one-page plot report: `docs/PLOT_REPORT_FEASIBILITY.md`.
