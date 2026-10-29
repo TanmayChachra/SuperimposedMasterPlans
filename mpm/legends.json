@@ -4,7 +4,13 @@
     "legendTitle": "Ghaziabad + Modinagar + Loni Master Plan 2031 (revised, GIS based), scale 1:52,000. Legend is in Hindi, as printed on the sheet.",
     "source": "Ghaziabad Development Authority, Master Plan 2031 map",
     "sourceUrl": "https://gdaghaziabad.in/",
-    "note": "Placed on the map by 16 control points (about 40 m RMSE). Zone-level accuracy only. Check the gazette notification before relying on it legally."
+    "note": "Placed on the map by 16 control points (about 40 m RMSE). Zone-level accuracy only. Check the gazette notification before relying on it legally.",
+    "bounds": [
+      77.1879,
+      28.5828,
+      77.6933,
+      28.9425
+    ]
   },
   "Delhi": {
     "legendUrl": "mpm/legends/delhi-2041.png",
@@ -18,6 +24,12 @@
     "legendTitle": "Meerut Master Plan 2031 (revised), prepared by Almondz for Meerut Development Authority. Legend as printed on the sheet (English).",
     "source": "Meerut Development Authority, Master Plan 2031 (approved 24 Jan 2024)",
     "sourceUrl": "https://mdameerut.in/CMS/upload/circular/17074634911.pdf",
-    "note": "Placed on the map by 12 control points (about 27 m RMSE, sheet is in UTM zone 44N). Zone-level accuracy only. The sheet's colours show land use; Highway Facility Zones are pink."
+    "note": "Placed on the map by 12 control points (about 27 m RMSE, sheet is in UTM zone 44N). Zone-level accuracy only. The sheet's colours show land use; Highway Facility Zones are pink.",
+    "bounds": [
+      77.4989,
+      28.7891,
+      78.1117,
+      29.2777
+    ]
   }
 }

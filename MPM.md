@@ -9,7 +9,8 @@ Live site: https://tanmaychachra.github.io/SuperimposedMasterPlans/ (GitHub Page
 - `site` holds all our work and is what Pages serves. After syncing `main`: `git checkout site && git merge main`, resolve, push.
 
 ## What we added (all additive)
-- `mpm/mpm.js`, `mpm/mpm.css`: legend pane and tab, `?city=` deep link, title and credit text, hides comment UI.
+- `mpm/mpm.js`, `mpm/mpm.css`: legend pane and tab, "More plans at once" (extra overlay layers; swipe compare switches off), Search Address loads the plan(s) covering the place found, `?city=` and `&plus=` deep links, title and credit text, hides comment UI. It captures upstream's `ol.Map` by wrapping the constructor, so main.js is untouched.
+- `mpm/legends.json` also holds `bounds` [W,S,E,N] for plans we host; other cities use a centre and zoom estimate for address matching.
 - `mpm/stub-supabase.js`: stands in for the Supabase client. Upstream's comments read and write the original author's database, so they are off here.
 - `mpm/legends.json`: per-city legend image, source and note (merged over cities.json by name).
 - `mpm/legends/*.png`, `City-Tiles/Ghaziabad_2031_COG.tif`.
