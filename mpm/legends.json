@@ -1,7 +1,7 @@
 {
   "Ghaziabad (GDA 2031)": {
     "legendUrl": "mpm/legends/ghaziabad-2031.png",
-    "legendTitle": "Ghaziabad + Modinagar + Loni Master Plan 2031 (revised, GIS based), scale 1:52,000. Legend is in Hindi, as printed on the sheet.",
+    "legendTitle": "Ghaziabad + Modinagar + Loni Master Plan 2031 (revised, GIS based), scale 1:52,000. The sheet legend is in Hindi; use the toggle for an English version.",
     "source": "Ghaziabad Development Authority, Master Plan 2031 map",
     "sourceUrl": "https://gdaghaziabad.in/",
     "note": "Placed on the map by 16 control points (about 40 m RMSE). Zone-level accuracy only. Check the gazette notification before relying on it legally.",
@@ -10,7 +10,303 @@
       28.5828,
       77.6933,
       28.9425
-    ]
+    ],
+    "legendEn": [
+      {
+        "name": "Signs and boundaries",
+        "items": [
+          {
+            "en": "Development area boundary",
+            "img": "mpm/legends/gzb/00.png"
+          },
+          {
+            "en": "Municipal corporation boundary",
+            "img": "mpm/legends/gzb/01.png"
+          },
+          {
+            "en": "RRTS / Metro alignment",
+            "img": "mpm/legends/gzb/02.png"
+          },
+          {
+            "en": "RRTS station",
+            "img": "mpm/legends/gzb/03.png"
+          },
+          {
+            "en": "Metro station",
+            "img": "mpm/legends/gzb/04.png"
+          },
+          {
+            "en": "TOD zone",
+            "img": "mpm/legends/gzb/05.png"
+          },
+          {
+            "en": "SDA (Special Development Area) boundary",
+            "img": "mpm/legends/gzb/06.png"
+          },
+          {
+            "en": "No construction zone",
+            "img": "mpm/legends/gzb/07.png"
+          },
+          {
+            "en": "Village boundary",
+            "img": "mpm/legends/gzb/08.png"
+          }
+        ]
+      },
+      {
+        "name": "Residential",
+        "items": [
+          {
+            "en": "Rural settlement (Gramin Abadi)",
+            "img": "mpm/legends/gzb/09.png"
+          },
+          {
+            "en": "Urban built-up area, high density",
+            "img": "mpm/legends/gzb/10.png"
+          },
+          {
+            "en": "Residential, medium density",
+            "img": "mpm/legends/gzb/11.png"
+          },
+          {
+            "en": "Residential, low density",
+            "img": "mpm/legends/gzb/12.png"
+          }
+        ]
+      },
+      {
+        "name": "Commercial",
+        "items": [
+          {
+            "en": "Urban commercial",
+            "img": "mpm/legends/gzb/13.png"
+          },
+          {
+            "en": "Sub-urban commercial",
+            "img": "mpm/legends/gzb/14.png"
+          },
+          {
+            "en": "Wholesale commercial / Mandi",
+            "img": "mpm/legends/gzb/15.png"
+          },
+          {
+            "en": "Bazaar street",
+            "img": "mpm/legends/gzb/16.png"
+          }
+        ]
+      },
+      {
+        "name": "Mixed land use",
+        "items": [
+          {
+            "en": "Mixed land use",
+            "img": "mpm/legends/gzb/17.png"
+          },
+          {
+            "en": "TOD mixed land use",
+            "img": "mpm/legends/gzb/18.png"
+          }
+        ]
+      },
+      {
+        "name": "Offices",
+        "items": [
+          {
+            "en": "Offices",
+            "img": "mpm/legends/gzb/19.png"
+          }
+        ]
+      },
+      {
+        "name": "Public and semi-public facilities",
+        "items": [
+          {
+            "en": "Institutional area",
+            "img": "mpm/legends/gzb/20.png"
+          },
+          {
+            "en": "Community facilities",
+            "img": "mpm/legends/gzb/21.png"
+          },
+          {
+            "en": "Knowledge park",
+            "img": "mpm/legends/gzb/22.png"
+          },
+          {
+            "en": "Institutional green area",
+            "img": "mpm/legends/gzb/23.png"
+          },
+          {
+            "en": "Solid waste disposal site",
+            "img": "mpm/legends/gzb/24.png"
+          },
+          {
+            "en": "Sewage / water treatment plant",
+            "img": "mpm/legends/gzb/25.png"
+          }
+        ]
+      },
+      {
+        "name": "Industrial",
+        "items": [
+          {
+            "en": "Light and small industry",
+            "img": "mpm/legends/gzb/26.png"
+          },
+          {
+            "en": "Medium industry",
+            "img": "mpm/legends/gzb/27.png"
+          },
+          {
+            "en": "Industrial development area",
+            "img": "mpm/legends/gzb/28.png"
+          },
+          {
+            "en": "IT / information technology",
+            "img": "mpm/legends/gzb/29.png"
+          }
+        ]
+      },
+      {
+        "name": "Recreation",
+        "items": [
+          {
+            "en": "City forest",
+            "img": "mpm/legends/gzb/30.png"
+          },
+          {
+            "en": "Recreation",
+            "img": "mpm/legends/gzb/31.png"
+          },
+          {
+            "en": "Park and sports ground",
+            "img": "mpm/legends/gzb/32.png"
+          },
+          {
+            "en": "River protection area",
+            "img": "mpm/legends/gzb/33.png"
+          },
+          {
+            "en": "Green belt",
+            "img": "mpm/legends/gzb/34.png"
+          },
+          {
+            "en": "High-tension line / green buffer",
+            "img": "mpm/legends/gzb/35.png"
+          }
+        ]
+      },
+      {
+        "name": "Transport",
+        "items": [
+          {
+            "en": "Transport nagar / bus terminal",
+            "img": "mpm/legends/gzb/36.png"
+          },
+          {
+            "en": "Parking",
+            "img": "mpm/legends/gzb/37.png"
+          },
+          {
+            "en": "Existing road",
+            "img": "mpm/legends/gzb/38.png"
+          },
+          {
+            "en": "Proposed road",
+            "img": "mpm/legends/gzb/39.png"
+          },
+          {
+            "en": "Widened road",
+            "img": "mpm/legends/gzb/40.png"
+          },
+          {
+            "en": "Railway line",
+            "img": "mpm/legends/gzb/41.png"
+          },
+          {
+            "en": "Railway land",
+            "img": "mpm/legends/gzb/42.png"
+          }
+        ]
+      },
+      {
+        "name": "Hi-tech",
+        "items": [
+          {
+            "en": "Hi-tech zone",
+            "img": "mpm/legends/gzb/43.png"
+          }
+        ]
+      },
+      {
+        "name": "Agriculture",
+        "items": [
+          {
+            "en": "Agriculture",
+            "img": "mpm/legends/gzb/44.png"
+          },
+          {
+            "en": "Highway facility zone",
+            "img": "mpm/legends/gzb/45.png"
+          }
+        ]
+      },
+      {
+        "name": "Others",
+        "items": [
+          {
+            "en": "River / water body / drain",
+            "img": "mpm/legends/gzb/46.png"
+          },
+          {
+            "en": "Shooting range",
+            "img": "mpm/legends/gzb/47.png"
+          },
+          {
+            "en": "Undefined area",
+            "img": "mpm/legends/gzb/48.png"
+          },
+          {
+            "en": "Heritage site",
+            "img": "mpm/legends/gzb/49.png"
+          },
+          {
+            "en": "Cremation and burial ground",
+            "img": "mpm/legends/gzb/50.png"
+          }
+        ]
+      },
+      {
+        "name": "Non-conforming land use (existing use differs from the plan)",
+        "items": [
+          {
+            "en": "Agriculture to residential",
+            "img": "mpm/legends/gzb/51.png"
+          },
+          {
+            "en": "Commercial to residential",
+            "img": "mpm/legends/gzb/52.png"
+          },
+          {
+            "en": "Office to residential",
+            "img": "mpm/legends/gzb/53.png"
+          },
+          {
+            "en": "Community facilities to residential",
+            "img": "mpm/legends/gzb/54.png"
+          },
+          {
+            "en": "Industry to residential",
+            "img": "mpm/legends/gzb/55.png"
+          },
+          {
+            "en": "Transport to residential",
+            "img": "mpm/legends/gzb/56.png"
+          }
+        ]
+      }
+    ],
+    "legendEnTitle": "Ghaziabad + Modinagar + Loni Master Plan 2031 (revised), GIS based. Scale 1:52,000. English labels translated from the Hindi sheet; the swatches are cropped from the sheet."
   },
   "Delhi": {
     "legendUrl": "mpm/legends/delhi-2041.png",

@@ -92,6 +92,24 @@
     var img = city.legendUrl
       ? '<a href="' + esc(city.legendUrl) + '" target="_blank" rel="noopener"><img src="' + esc(city.legendUrl) + '" alt="Legend of ' + esc(city.name) + '" loading="lazy"></a><div class="hint">Tap the image to open it full size.</div>'
       : '<p class="none">No separate legend for this plan. If the overlay is a full map sheet, the legend is printed on the sheet itself.</p>';
+    if (city.legendEn) {
+      var en = '<p class="meta">' + esc(city.legendEnTitle || '') + '</p>' + city.legendEn.map(function (s) {
+        return '<h4>' + esc(s.name) + '</h4>' + s.items.map(function (i) {
+          return '<div class="mpm-row"><img src="' + esc(i.img) + '" alt="" loading="lazy"><span>' + esc(i.en) + '</span></div>';
+        }).join('');
+      }).join('');
+      var lang = (function () { try { return localStorage.getItem('mpmLang') || 'en'; } catch (e) { return 'en'; } })();
+      body.innerHTML = '<p class="meta">' + meta + '</p><div class="mpm-lang" role="tablist"><button type="button" data-l="en">English</button><button type="button" data-l="hi">हिन्दी (as printed)</button></div>' +
+        '<div class="mpm-pane" data-l="en">' + en + '</div><div class="mpm-pane" data-l="hi">' + img + '</div>';
+      var setLang = function (l) {
+        Array.prototype.forEach.call(body.querySelectorAll('.mpm-lang button'), function (b) { b.classList.toggle('on', b.getAttribute('data-l') === l); });
+        Array.prototype.forEach.call(body.querySelectorAll('.mpm-pane'), function (p) { p.hidden = p.getAttribute('data-l') !== l; });
+        try { localStorage.setItem('mpmLang', l); } catch (e) { /* private mode */ }
+      };
+      Array.prototype.forEach.call(body.querySelectorAll('.mpm-lang button'), function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-l')); }); });
+      setLang(lang);
+      return;
+    }
     body.innerHTML = '<p class="meta">' + meta + '</p>' + img;
   }
 

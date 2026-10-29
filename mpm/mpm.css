@@ -66,3 +66,11 @@
   #mpm-legend-tab { padding: 18px 10px; }
   #mpm-toast { bottom: 90px; }
 }
+
+.mpm-lang { display: flex; gap: 6px; margin: 4px 0 10px; }
+.mpm-lang button { flex: 1; padding: 8px; border: 1px solid var(--input-border); background: var(--input-bg); color: var(--text-color); border-radius: 8px; cursor: pointer; font: 600 13px system-ui, sans-serif; }
+.mpm-lang button.on { background: var(--primary); color: var(--primary-text); border-color: var(--primary); }
+.mpm-pane[hidden] { display: none; }
+#mpm-legend h4 { margin: 14px 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted-color); }
+.mpm-row { display: flex; align-items: center; gap: 10px; padding: 3px 0; font-size: 13px; }
+#mpm-legend .mpm-row img { width: 56px; height: auto; max-height: 34px; object-fit: contain; flex: none; background: #fff; border-radius: 3px; cursor: default; }
