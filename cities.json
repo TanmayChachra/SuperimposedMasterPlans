@@ -19,6 +19,15 @@
       "zoom": 11
     },
     {
+      "name": "Ghaziabad zones (GDA 2031 draft)",
+      "cogUrl": "City-Tiles/Ghaziabad_zones_2031_COG.tif",
+      "center": [
+        77.45,
+        28.75
+      ],
+      "zoom": 11
+    },
+    {
       "name": "Sikri Khurd khasra (Modinagar)",
       "cogUrl": "City-Tiles/SikriKhurd_khasra_COG.tif",
       "center": [
