@@ -12,5 +12,12 @@
     "source": "Delhi Development Authority, draft MPD 2041",
     "sourceUrl": "https://dda.gov.in/master-plan-2041-draft",
     "note": "Overlay file is hosted by the upstream viewer. Draft plan, not confirmed as notified."
+  },
+  "Meerut (MDA 2031)": {
+    "legendUrl": "mpm/legends/meerut-2031.png",
+    "legendTitle": "Meerut Master Plan 2031 (revised), prepared by Almondz for Meerut Development Authority. Legend as printed on the sheet (English).",
+    "source": "Meerut Development Authority, Master Plan 2031 (approved 24 Jan 2024)",
+    "sourceUrl": "https://mdameerut.in/CMS/upload/circular/17074634911.pdf",
+    "note": "Placed on the map by 12 control points (about 27 m RMSE, sheet is in UTM zone 44N). Zone-level accuracy only. The sheet's colours show land use; Highway Facility Zones are pink."
   }
 }

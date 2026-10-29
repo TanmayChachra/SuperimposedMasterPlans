@@ -10,6 +10,15 @@
       "zoom": 11
     },
     {
+      "name": "Meerut (MDA 2031)",
+      "cogUrl": "City-Tiles/Meerut_2031_COG.tif",
+      "center": [
+        77.72,
+        29.0
+      ],
+      "zoom": 11
+    },
+    {
       "name": "Navi Mumbai (CIDCO Nodal Plan)",
       "cogUrl": "https://pub-5d7a831c335c4d83b8b0f8ebe750e175.r2.dev/City-Tiles/Navi_Mumbai_CIDCO.tif",
       "center": [

@@ -20,17 +20,17 @@
   function branding() {
     var h = document.querySelector('#menu-content h2');
     if (h) {
-      h.textContent = 'NCR Master Plan Map';
+      h.textContent = 'Superimposed Master Plans';
       h.after(el('p', { 'class': 'mpm-credit' },
         'Fork of <a href="https://github.com/datsvarun/master-plan-viewer" target="_blank" rel="noopener">Master Plan Viewer</a> by Varun Phadke.'));
     }
-    document.title = 'NCR Master Plan Map';
+    document.title = 'Superimposed Master Plans';
     Array.prototype.forEach.call(document.querySelectorAll('label'), function (l) {
       if (l.textContent.trim() === 'Comments') { l.classList.add('mpm-hidden'); }
     });
     var modal = document.querySelector('#info-modal .modal-content');
     if (modal) {
-      modal.appendChild(el('p', {}, '<strong>About this version:</strong> a public fork of Master Plan Viewer with added NCR plans and map legends. ' +
+      modal.appendChild(el('p', {}, '<strong>About this version:</strong> a public fork of Master Plan Viewer with added plans and map legends. ' +
         'Overlays are scanned government maps placed on the map by control points, so treat them as zone-level only (tens of metres of error). ' +
         'Comments are turned off here. Source and accuracy notes for each plan are in the Legend panel.'));
     }

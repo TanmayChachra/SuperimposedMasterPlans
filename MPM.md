@@ -1,7 +1,7 @@
-# MasterPlanMapping (fork notes)
+# Superimposed Master Plans (fork notes)
 
-Public fork of [datsvarun/master-plan-viewer](https://github.com/datsvarun/master-plan-viewer) (Varun Phadke) with NCR plans and map legends.
-Live site: https://tanmaychachra.github.io/MasterPlanMapping/ (GitHub Pages, branch `site`).
+Public fork of [datsvarun/master-plan-viewer](https://github.com/datsvarun/master-plan-viewer) (Varun Phadke) with more plans and map legends.
+Live site: https://tanmaychachra.github.io/SuperimposedMasterPlans/ (GitHub Pages, branch `site`).
 
 ## Branches and upstream sync
 - `main` is an exact mirror of upstream. Never commit to it. Update with "Sync fork" on GitHub, or:
@@ -16,11 +16,12 @@ Live site: https://tanmaychachra.github.io/MasterPlanMapping/ (GitHub Pages, bra
 
 ## Patches to upstream files (expect small merge conflicts on sync)
 - `index.html`: og:url, mpm.css link, Supabase script replaced by the stub, mpm.js script added.
-- `cities.json`: Ghaziabad entry inserted at the top.
+- `cities.json`: Ghaziabad and Meerut entries inserted at the top.
 - `robots.txt`, `sitemap.xml`: site URL. Deleted `google3b474d8927d0dea6.html` (author's search-console token). Added `.nojekyll`.
 
 ## Data sources and attribution
 - Ghaziabad plan: Ghaziabad Development Authority, Master Plan 2031 map PDF (https://ntender.gdaghaziabad.in/uploads/listing/12547_Map.pdf, via gdaghaziabad.in), downloaded 2026-10-29. No reuse licence stated. Raster only, placed by 16 control points (about 40 m RMSE), exterior made transparent. Legend is cropped from the same sheet.
+- Meerut plan: Meerut Development Authority, Master Plan 2031 (revised) PDF, https://mdameerut.in/CMS/upload/circular/17074634911.pdf, downloaded 2026-10-29, no reuse licence stated. Raster only, 12 control points (UTM 44N), exterior transparent. Legend cropped from the same sheet.
 - Delhi legend: cropped from the DDA draft land use plan sheet inside upstream's `Delhi_2041_COG.tif` (hosted by upstream; source https://dda.gov.in/master-plan-2041-draft).
 - Control points and checks: OpenStreetMap contributors (ODbL). Basemap tiles: OpenStreetMap, Esri World Imagery.
 - Other cities load from upstream's own storage; we do not copy those files.
