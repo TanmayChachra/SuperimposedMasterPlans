@@ -135,3 +135,29 @@ body[data-theme='dark'] {
   #menu-content { max-height: 62vh; }
   .mpm-brand small { display: none; }
 }
+
+
+/* ===== one palette everywhere: brand green, dark green header, no blue or colour emoji ===== */
+body { --accent-glow: rgba(27, 107, 87, .45); }
+.fab, #theme-toggle { font-size: 0 !important; }
+.fab::before, #theme-toggle::before { content: ''; display: block; width: 22px; height: 22px; background: currentColor; -webkit-mask: var(--ic) center / contain no-repeat; mask: var(--ic) center / contain no-repeat; }
+.fab { color: var(--primary); }
+.fab:hover { background-color: var(--surface-hover); }
+.fab.active { color: var(--primary-text); background-color: var(--primary); }
+#theme-toggle { color: #fff; --ic: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath fill=%27none%27 stroke=%27black%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z%27/%3E%3C/svg%3E"); }
+body[data-theme='dark'] #theme-toggle { --ic: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cg fill=%27none%27 stroke=%27black%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%274%27/%3E%3Cpath d=%27M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4%27/%3E%3C/g%3E%3C/svg%3E"); }
+#mpm-legend-fab { --ic: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cpath fill=%27none%27 stroke=%27black%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M4 6h16M4 12h16M4 18h10%27/%3E%3C/svg%3E"); }
+#basemap-toggle-btn { --ic: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cg fill=%27none%27 stroke=%27black%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%279%27/%3E%3Cpath d=%27M3 12h18M12 3c3.5 3.2 3.5 14.8 0 18M12 3c-3.5 3.2-3.5 14.8 0 18%27/%3E%3C/g%3E%3C/svg%3E"); }
+#geolocate-btn { --ic: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cg fill=%27none%27 stroke=%27black%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%273.5%27/%3E%3Cpath d=%27M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4%27/%3E%3C/g%3E%3C/svg%3E"); }
+#info-btn { --ic: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cg fill=%27none%27 stroke=%27black%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%279%27/%3E%3Cpath d=%27M12 11v6M12 7.5h.01%27/%3E%3C/g%3E%3C/svg%3E"); }
+#swipe-handle::before { background: var(--brand); color: #fff; border-color: #fff; }
+#swipe-handle::after { background: #fff; box-shadow: 0 0 0 1px var(--brand); }
+@keyframes city-search-pulse { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 100% { box-shadow: 0 0 0 6px transparent; } }
+.basemap-group button.active { background: var(--primary); border-color: var(--primary); }
+.ol-attribution button, .ol-control button { color: var(--brand); }
+
+/* layer rows: name, move up/down, info, remove */
+.mpm-layer { grid-template-columns: auto 1fr auto auto auto; }
+.mpm-layer .mv { display: flex; flex-direction: column; gap: 2px; }
+.mpm-layer .mv button { width: 22px; height: 12px; font-size: 7px; line-height: 1; border-radius: 3px; }
+.mpm-layer .mv button:disabled { opacity: .3; cursor: default; border-color: var(--input-border); color: var(--muted-color); }

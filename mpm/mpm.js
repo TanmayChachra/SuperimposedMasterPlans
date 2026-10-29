@@ -13,6 +13,7 @@
   var current = null;
   var pane, tab, fab, toast;
   var extras = {};   // name -> ol layer
+  var order = [];    // layer names, bottom to top
   var map = null;
 
   // capture upstream's map instance
@@ -154,6 +155,7 @@
   function onCity(name) {
     var city = cities[name] || null;
     if (city === current) { return; }
+    var prev = current;
     current = city;
     watchLoad(city, 0);
     if (city && extras[city.name]) { setExtra(city.name, false); }
@@ -163,13 +165,9 @@
         if (mc && mt && !mc.classList.contains('hidden')) { mt.click(); }
       }, 500);
     }
-    // cadastral (khasra) layers draw above master plans, even when chosen as the main layer
-    if (map) {
-      var mine = Object.keys(extras).map(function (k) { return extras[k]; });
-      map.getLayers().getArray().forEach(function (l) {
-        if (l instanceof ol.layer.WebGLTile && mine.indexOf(l) === -1) { l.setZIndex(city && city.top ? 10 : 0); }
-      });
-    }
+    var pi = prev ? order.indexOf(prev.name) : -1;          // the new primary layer takes the old one's place in the stack
+    if (city) { if (pi >= 0) { order[pi] = city.name; } else { place(city.name); } } else if (pi >= 0) { order.splice(pi, 1); }
+    applyOrder();
     if (city) { var ml = mainLayer(); if (ml) { ml.setVisible(true); } }
     renderLayers();
     render(city);
@@ -189,6 +187,19 @@
   }
 
   var EXTRA_OPACITY = 0.85;
+  // stacking order: new layers go on top, but khasra ("top") layers stay above master plans until you move them
+  function layerOf(name) { return extras[name] || (current && current.name === name ? mainLayer() : null); }
+  function applyOrder() { order.forEach(function (n, i) { var l = layerOf(n); if (l) { l.setZIndex(i + 1); } }); }
+  function place(name) {
+    order = order.filter(function (n) { return n !== name; });
+    var c = cities[name], at = c && c.top ? order.length : order.findIndex(function (n) { return cities[n] && cities[n].top; });
+    order.splice(at < 0 ? order.length : at, 0, name);
+  }
+  function move(name, dir) {
+    var i = order.indexOf(name), j = i + dir;
+    if (i < 0 || j < 0 || j >= order.length) { return; }
+    var x = order[i]; order[i] = order[j]; order[j] = x; applyOrder(); renderLayers();
+  }
   function mainLayer() {
     var mine = Object.keys(extras).map(function (k) { return extras[k]; });
     return map && map.getLayers().getArray().filter(function (l) { return l instanceof ol.layer.WebGLTile && mine.indexOf(l) === -1; })[0];
@@ -199,12 +210,12 @@
     if (!map || !c) { return; }
     if (on && !extras[name]) {
       var lyr = new ol.layer.WebGLTile({ source: makeSource(c), opacity: EXTRA_OPACITY, zIndex: c.top ? 10 : 0 });
-      map.addLayer(lyr); extras[name] = lyr;
+      map.addLayer(lyr); extras[name] = lyr; place(name); applyOrder();
       var sw = $('swipe-toggle');
       if (sw && sw.classList.contains('active')) { sw.click(); say('Swipe compare is off while several layers are shown.'); }
     } else if (!on && extras[name]) {
       var src = extras[name].getSource();
-      map.removeLayer(extras[name]); delete extras[name];
+      map.removeLayer(extras[name]); delete extras[name]; order = order.filter(function (n) { return n !== name; }); applyOrder();
       if (src && src.dispose) { setTimeout(function () { src.dispose(); }, 1000); }
     }
     renderLayers();
@@ -226,12 +237,15 @@
   function renderLayers() {
     var box = $('mpm-layers'); if (!box) { return; }
     var slider = $('opacity-slider'); $('mpm-slider-park').appendChild(slider); box.innerHTML = '';
-    function row(name, layer, isMain) {
+    function row(name, layer, isMain, pos) {
       var r = el('div', { 'class': 'mpm-layer' + (isMain ? ' main' : '') });
-      r.innerHTML = '<label class="eye" title="Show or hide"><input type="checkbox"></label><div class="nm"><b></b><small></small></div><button type="button" class="lg" title="Legend, source and accuracy">i</button><button type="button" class="x" title="Remove layer">&#10005;</button><div class="op"></div>';
-      r.querySelector('b').textContent = name; r.querySelector('small').textContent = isMain ? 'primary layer' : 'overlay';
+      r.innerHTML = '<label class="eye" title="Show or hide"><input type="checkbox"></label><div class="nm"><b></b><small></small></div><div class="mv"><button type="button" class="up" title="Move up (draw on top)">&#9650;</button><button type="button" class="dn" title="Move down">&#9660;</button></div><button type="button" class="lg" title="Legend, source and accuracy">i</button><button type="button" class="x" title="Remove layer">&#10005;</button><div class="op"></div>';
+      r.querySelector('b').textContent = name; r.querySelector('small').textContent = (isMain ? 'primary' : 'overlay') + (pos === order.length - 1 ? ' \u00b7 on top' : '');
       var chk = r.querySelector('input'); chk.checked = layer ? layer.getVisible() : true;
-      chk.addEventListener('change', function () { var l = isMain ? mainLayer() : extras[name]; if (l) { l.setVisible(chk.checked); } });
+      chk.addEventListener('change', function () { var l = layerOf(name); if (l) { l.setVisible(chk.checked); } });
+      r.querySelector('.up').disabled = pos === order.length - 1; r.querySelector('.dn').disabled = pos === 0;
+      r.querySelector('.up').addEventListener('click', function () { move(name, 1); });
+      r.querySelector('.dn').addEventListener('click', function () { move(name, -1); });
       r.querySelector('.lg').addEventListener('click', function () { render(cities[name]); setOpen(true); });
       r.querySelector('.x').addEventListener('click', function () { removeLayer(name); });
       var op = r.querySelector('.op');
@@ -241,8 +255,7 @@
       }
       box.appendChild(r);
     }
-    if (current) { row(current.name, mainLayer(), true); }
-    Object.keys(extras).forEach(function (n) { row(n, extras[n], false); });
+    for (var i = order.length - 1; i >= 0; i--) { var n = order[i], isMain = !!(current && current.name === n); row(n, layerOf(n), isMain, i); }
     if (!box.children.length) { box.appendChild(el('p', { 'class': 'mpm-empty' }, 'No layer yet. Add one below.')); }
     var sel = $('mpm-add');
     Array.prototype.forEach.call(sel.options, function (o) { if (o.value) { o.disabled = !!extras[o.value] || !!(current && current.name === o.value); } });
