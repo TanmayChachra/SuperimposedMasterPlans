@@ -17,7 +17,7 @@
 
   // capture upstream's map instance
   var OrigMap = ol.Map;
-  ol.Map = function (opts) { map = new OrigMap(opts); return map; };
+  ol.Map = function (opts) { map = new OrigMap(opts); window.mpmMap = map; return map; };   // window.mpmMap: handy for debugging
   ol.Map.prototype = OrigMap.prototype;
 
   function el(tag, attrs, html) {
@@ -127,12 +127,31 @@
     })();
   }
 
+  // free the previous plan's tiles when upstream swaps the main layer's source (phones ran out of memory after a few switches)
+  var origSet = ol.layer.WebGLTile.prototype.setSource;
+  ol.layer.WebGLTile.prototype.setSource = function (s) {
+    var old = this.getSource(); origSet.call(this, s);
+    if (old && old !== s && old.dispose) { setTimeout(function () { old.dispose(); }, 1500); }
+  };
+
+  // if the main plan did not come up (flaky network or a phone short of GPU memory), select it again, twice at most
+  function watchLoad(city, n) {
+    if (!city || !map) { return; }
+    setTimeout(function () {
+      if (current !== city) { return; }
+      var mine = Object.keys(extras).map(function (k) { return extras[k]; });
+      var main = map.getLayers().getArray().filter(function (l) { return l instanceof ol.layer.WebGLTile && mine.indexOf(l) === -1; })[0];
+      var st = main && main.getSource() && main.getSource().getState();
+      if (st === 'error' && n < 2) { say('Reloading ' + city.name + '...'); selectCity(city.name, function () { watchLoad(city, n + 1); }); }
+      else if (st === 'loading' && n < 2) { watchLoad(city, n + 1); }
+    }, 5000);
+  }
+
   function onCity(name) {
     var city = cities[name] || null;
     if (city === current) { return; }
-    if (current && current.group) { groupSet(current, false); }
     current = city;
-    if (city && city.group) { groupSet(city, true); }
+    watchLoad(city, 0);
     if (city && extras[city.name]) { setExtra(city.name, false); }
     if (city && window.innerWidth <= 600) {   // phones: get the big menu panel out of the way of the map
       setTimeout(function () {
@@ -158,36 +177,6 @@
     setInterval(function () { if (inp && inp !== document.activeElement) { onCity(inp.value.trim()); } }, 300);
   }
 
-  // ---------- village groups (many small COGs, loaded only while in view) ----------
-  var groups = {};
-  function groupSync(c, g) {
-    var v = map.getView(), z = v.getZoom(), base = c.group.replace('index.json', '');
-    var e = ol.proj.transformExtent(v.calculateExtent(map.getSize()), 'EPSG:3857', 'EPSG:4326');
-    g.idx.forEach(function (i) {
-      var b = i.bounds, seen = z >= 12.5 && !(b[0] > e[2] || b[2] < e[0] || b[1] > e[3] || b[3] < e[1]);
-      if (seen && !g.layers[i.code]) {
-        g.layers[i.code] = new ol.layer.WebGLTile({ source: new ol.source.GeoTIFF({ sources: [{ url: base + i.code + '.tif' }], interpolate: true, normalize: true, wrapX: false }),
-          opacity: parseFloat($('opacity-slider').value), zIndex: 10 });
-        map.addLayer(g.layers[i.code]);
-      } else if (!seen && g.layers[i.code]) { map.removeLayer(g.layers[i.code]); delete g.layers[i.code]; }
-    });
-  }
-  function groupSet(c, on) {
-    var g = groups[c.name];
-    if (on && !g && map) {
-      g = groups[c.name] = { layers: {} };
-      fetch(c.group).then(function (r) { return r.json(); }).then(function (idx) {
-        g.idx = idx; g.h = function () { groupSync(c, g); }; map.on('moveend', g.h); g.h();
-      });
-      if (map.getView().getZoom() < 12.5) { say('Zoom in to see khasra maps.'); }
-    } else if (!on && g) {
-      if (g.h) { map.un('moveend', g.h); }
-      Object.keys(g.layers).forEach(function (k) { map.removeLayer(g.layers[k]); });
-      delete groups[c.name];
-    }
-  }
-  function groupOpacity(c, o) { var g = groups[c.name]; if (g) { Object.keys(g.layers).forEach(function (k) { g.layers[k].setOpacity(o); }); } }
-
   // ---------- several plans at once ----------
   function makeSource(c) {
     if (c.xyzUrl) { return new ol.source.XYZ({ url: c.xyzUrl, crossOrigin: 'anonymous' }); }
@@ -197,11 +186,7 @@
   function setExtra(name, on) {
     var c = cities[name];
     if (!map || !c) { return; }
-    if (c.group) {
-      groupSet(c, on);
-      if (on) { extras[name] = { setOpacity: function (o) { groupOpacity(c, o); } }; } else { delete extras[name]; }
-      var sg = $('swipe-toggle'); if (on && sg && sg.classList.contains('active')) { sg.click(); }
-    } else if (on && !extras[name]) {
+    if (on && !extras[name]) {
       var lyr = new ol.layer.WebGLTile({ source: makeSource(c), opacity: parseFloat($('opacity-slider').value), zIndex: c.top ? 10 : 0 });
       map.addLayer(lyr); extras[name] = lyr;
       var sw = $('swipe-toggle');
