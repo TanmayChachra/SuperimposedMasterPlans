@@ -1,4 +1,4 @@
-# Superimposed Master Plans (fork notes)
+# Silverleaf Buildcon master plan overlay (fork notes)
 
 Public fork of [datsvarun/master-plan-viewer](https://github.com/datsvarun/master-plan-viewer) (Varun Phadke) with more plans and map legends.
 Live site: https://tanmaychachra.github.io/SuperimposedMasterPlans/ (GitHub Pages, branch `site`).
@@ -48,3 +48,17 @@ Live site: https://tanmaychachra.github.io/SuperimposedMasterPlans/ (GitHub Page
 - QGIS: Layer > Add Raster Layer, source `/vsicurl/https://tanmaychachra.github.io/SuperimposedMasterPlans/City-Tiles/<file>.tif` (or download the .tif). ArcGIS Pro: download the .tif and add it.
 - Google Earth Pro: `python tools/export_kmz.py City-Tiles/<file>.tif out.kmz [--res-m 2]` makes a KMZ of tiled, transparent ground overlays. Then File > Open. Keep big layers coarse (khasra at 2 m is 120 MB).
 - Not tested in Google Earth itself, only that the KML parses.
+
+## Caching (sw.js)
+The maps barely change, so a service worker keeps them on the device after the first visit.
+- `City-Tiles/*.tif`: every byte range the viewer asks for is stored and replayed (the Cache API cannot store partial replies, so each is saved as a 200 under url + range and replayed as a 206). Cached for good.
+- OSM and Esri tiles: cache first, newest 800 kept. CDN libraries: cache first. This site's files: stale-while-revalidate (instant, refreshed for next time).
+- RULE: replacing a .tif under the same name makes visitors see mixed old and new blocks. Rename the file, or bump `DATA_V` in sw.js, when you change a map.
+- RULE: bump `APP_V` in sw.js to push new app files to everyone at once, and bump the `?v=` numbers in index.html.
+- `?nosw=1` on the page URL removes the worker and all its caches (use it if something looks stale).
+- Verified in desktop Chrome (first request stored, repeat served instantly with the right bytes). The Claude in-app browser pane does not run service workers, so it always loads fresh.
+
+## Layers panel (UI)
+- Each active layer is a row with its own show/hide box, opacity slider, `i` button (legend, source, accuracy) and remove button. The primary layer's slider is upstream's own `#opacity-slider` (upstream resets opacity from it on every city load); overlays have their own.
+- "+ Add a layer" is a grouped picker (master plans, zones, khasra, other cities). The first layer chosen becomes the primary layer, later ones are overlays (default opacity 0.85). Removing the primary layer hides it, and the next layer added becomes primary.
+- Branding: Silverleaf Buildcon header, green theme in `mpm/mpm.css` (CSS variables at the top of the theme block), `noindex` meta and `robots.txt` Disallow since this is an internal tool. The About text no longer names the upstream author; credit stays in this file and the repo history.
