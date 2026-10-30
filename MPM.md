@@ -63,7 +63,8 @@ The maps barely change, so a service worker keeps them on the device after the f
 - Branding: Silverleaf Buildcon header, green theme in `mpm/mpm.css` (CSS variables at the top of the theme block), `noindex` meta and `robots.txt` Disallow since this is an internal tool. The About text no longer names the upstream author; credit stays in this file and the repo history.
 
 ## Click info, sharing, client view (mpm/tools.js)
-- Click the map: card with lat/lon, village (from `mpm/data/villages_grid.png` + `villages.json`, built by `mk_idgrid.py`), planning zone per visible layer (`mpm/data/zonecolors.json`: indicative: the Ghaziabad plan colour is matched to the legend), and links to Bhu-Naksha and Bhulekh with a "Copy details" button. No owner data is fetched or stored by the site.
+- Plot info is a toggle (the crosshair button in the floating column, off by default), so panning, pinching or scrolling never opens a card. Turn it on, tap the map, turn it off to close the card. Client view has it too.
+- Click the map (with Plot info on): card with lat/lon, village (from `mpm/data/villages_grid.png` + `villages.json`, built by `mk_idgrid.py`), planning zone per visible layer (`mpm/data/zonecolors.json`: indicative: the Ghaziabad plan colour is matched to the legend), and links to Bhu-Naksha and Bhulekh with a "Copy details" button. No owner data is fetched or stored by the site.
 - Share bar: Copy link, WhatsApp, Client link, PDF. The link stores layers, order, opacity, visibility, map position and satellite on/off (`?L=...&P=...&v=lon,lat,zoom&sat=1`). `&client=1` gives a read-only view (no search, add, remove, move, swipe).
 - PDF: map extract plus coordinates, layer list with sources and the disclaimer (jsPDF 2.5.1 from cdnjs, loaded on demand). Verified in desktop Chrome with a WebGL layer; Hindi names are left out of the PDF (no Devanagari font).
 - If you add villages, rerun `mk_idgrid.py` and commit the two files in `mpm/data/`.

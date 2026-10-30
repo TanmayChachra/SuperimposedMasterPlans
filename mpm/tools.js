@@ -131,7 +131,23 @@
   }
   function steps(v, kh) { return 'Ghaziabad district (140), ' + tehsilName(v.tehsil) + ' tehsil (' + v.tehsil + '), village ' + v.name + ' (' + v.code + ')' + (kh ? ', khasra ' + kh : ''); }
 
+  // Plot info is a toggle so panning or pinching never opens the card by accident
+  var infoOn = false;
+  function setInfo(v) {
+    infoOn = v; var b = $('mpm-info'); if (b) { b.classList.toggle('active', v); b.setAttribute('aria-pressed', v); }
+    map.getTargetElement().classList.toggle('mpm-pick', v);
+    if (v) { M.say('Plot info on: tap a spot on the map'); } else { pop.setPosition(undefined); popEl.innerHTML = ''; }
+  }
+  function infoButton() {
+    var host = $('geolocate-btn'); host = host && host.parentNode; if (!host) { return; }
+    var row = document.createElement('div'); row.className = 'fab-row';
+    row.innerHTML = '<button id="mpm-info" type="button" class="fab" title="Plot info" aria-pressed="false">i</button><span class="fab-label">Plot info</span>';
+    host.parentNode.insertBefore(row, host.nextSibling);
+    row.firstChild.addEventListener('click', function () { setInfo(!infoOn); });
+  }
+
   function onClick(e) {
+    if (!infoOn) { return; }
     var xy = e.coordinate, ll = ol.proj.toLonLat(xy), v = villageAt(xy), rows = '', zones = [];
     M.order.slice().reverse().forEach(function (n) { var z = zoneAt(n, e.pixel); if (z) { zones.push({ layer: n, label: z.label, approx: z.approx }); rows += '<div class="r"><span>' + esc(n) + '</span><b>' + esc(z.label) + (z.approx ? ' <i>(indicative)</i>' : '') + '</b></div>'; } });
     last = { xy: xy, ll: ll, v: v, zones: zones };
@@ -220,7 +236,7 @@
     pop = new ol.Overlay({ element: popEl, positioning: 'bottom-center', offset: [0, -10], stopEvent: true }); map.addOverlay(pop);
     map.on('singleclick', onClick);
     M.snapshot = snapshot; M.shotAt = shotAt; M.exportReport = exportReport;   // also used for testing
-    shareBar();
+    shareBar(); infoButton();
     if (q.get('client') === '1') { clientMode(); }
     fetch('mpm/data/bhulekh_villages.json').then(function (r) { return r.json(); }).then(function (b) { bhu = b; Object.keys(b.tehsils).forEach(function (k) { b.tehsils[k].villages.split(';').forEach(function (s) { var p = s.split('|'); byCode[p[0]] = { name: p[1], tehsil: k }; }); }); }).catch(function () {});
     fetch('mpm/data/landmarks.json').then(function (r) { return r.json(); }).then(function (l) { lm = l.items; }).catch(function () {});
