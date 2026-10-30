@@ -8,6 +8,7 @@ Newest first. One line per change that visitors or maintainers can notice. Each 
 - 2026-10-29 Internal Silverleaf Buildcon UI, per-layer opacity/visibility/remove, service worker cache, About text without creator name, noindex. Branch `feature/internal-ui-cache`.
 - 2026-10-29 Khasra: all 101 Modinagar villages in one COG (faster, opacity works), retry + memory fix on city switch, KMZ export tool. Branch `fix/khasra-speed-and-switching`.
 - 2026-10-29 Modinagar khasra from Bhu-Naksha (92 villages, loaded on demand), replaces the hand-placed Sikri Khurd layer. Branch `feature/modinagar-khasra`.
+- 2026-10-30 Plot info is now a toggle button (off by default) instead of opening on every tap, for phones. Branch `feature/info-toggle`.
 - 2026-10-30 Removed the Ghaziabad zones layer (file, legend, colour lookup). Branch `feature/remove-zonal`. Restore from git history (`feature/ghaziabad-zones-2031`) if needed.
 - 2026-10-29 Ghaziabad zones layer (draft 2031, zones 1 to 8, RRTS). Branch `feature/ghaziabad-zones-2031`.
 - 2026-10-29 Sikri Khurd khasra layer, cadastral layers drawn above plans.
