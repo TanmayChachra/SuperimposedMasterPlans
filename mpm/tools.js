@@ -146,6 +146,26 @@
     row.firstChild.addEventListener('click', function () { setInfo(!infoOn); });
   }
 
+  // ---------- Shatru Sampatti (enemy property) check against a hand-entered list ----------
+  var ep = null;
+  function norm(s) { return String(s || '').toLowerCase().replace(/\s+/g, ''); }
+  function epCheck(vi, kh) {
+    if (!ep || !ep.items.length) { return { k: 'none', text: 'Our list is not loaded yet. Verify with the Custodian (enemyproperty.mha.gov.in) and the Bhulekh khatauni.' }; }
+    if (!vi || !kh) { return { k: 'need', text: 'Pick the village and enter the khasra to check.' }; }
+    var k = norm(kh), base = k.split('/')[0], hit, near;
+    ep.items.forEach(function (i) {
+      if (String(i.code) !== String(vi.code) && norm(i.village) !== norm(vi.name)) { return; }
+      var ik = norm(i.khasra); if (ik === k) { hit = i; } else if (ik.split('/')[0] === base) { near = i; }
+    });
+    if (hit) { return { k: 'hit', text: 'LISTED as enemy property (' + hit.source + '). Get legal advice before going ahead.' }; }
+    if (near) { return { k: 'near', text: 'Same base khasra is listed (' + near.khasra + ', ' + near.source + '). Check with a lawyer.' }; }
+    return { k: 'clear', text: 'Not in our list (' + (ep.asOf || 'undated') + ', ' + ep.items.length + ' plots). The list may be incomplete: verify with the Custodian.' };
+  }
+  function epShow() {
+    var el = $('mpm-ep'), kh = $('mpm-kh'); if (!el || !kh) { return; }
+    var r = epCheck(villageInfo(), kh.value.trim()); el.className = 'r ' + r.k; el.lastChild.textContent = r.text;
+  }
+
   function onClick(e) {
     if (!infoOn) { return; }
     var xy = e.coordinate, ll = ol.proj.toLonLat(xy), v = villageAt(xy), rows = '', zones = [];
@@ -162,9 +182,10 @@
     popEl.innerHTML = '<button class="x" type="button" aria-label="Close">&#10005;</button>' +
       '<div class="t">' + ll[1].toFixed(5) + ', ' + ll[0].toFixed(5) + ' <a target="_blank" rel="noopener" href="https://www.google.com/maps?q=' + ll[1].toFixed(5) + ',' + ll[0].toFixed(5) + '">Google Maps</a></div>' +
       vrow + rows + (ls ? '<div class="r"><span>Nearest RRTS</span><b>' + esc(ls.n) + ' <small>' + ls.d.toFixed(1) + ' km straight</small></b></div>' : '') +
+      '<div class="r" id="mpm-ep"><span>Shatru Sampatti</span><b></b></div>' +
       '<div class="kh"><input id="mpm-kh" type="text" inputmode="numeric" placeholder="Khasra no. (read it off the map)"><div class="b"><button type="button" data-k="bhulekh">Open Khatauni</button><button type="button" data-k="naksha" class="alt">Bhu-Naksha</button><button type="button" data-k="report">One-page report</button></div>' +
       '<p id="mpm-hint">Khatauni opens on the Bhulekh district list and copies the village name: choose Ghaziabad, the tehsil, paste in Search Village, then enter the khasra. Owner details come from Bhulekh itself; this site does not fetch or store them.</p></div>';
-    pop.setPosition(xy);
+    pop.setPosition(xy); epShow();
     popEl.querySelector('.x').onclick = function () { pop.setPosition(undefined); };
     popEl.querySelector('.kh .b').onclick = function (ev) {
       var k = ev.target.getAttribute('data-k'); if (!k) { return; }
@@ -207,6 +228,7 @@
       kv('Village', vi ? vi.name + ' (portal code ' + vi.code + ')' : 'not selected');
       kv('Tehsil / district', (vi ? tehsilName(vi.tehsil) + ' tehsil' : '-') + ', Ghaziabad district (140), Uttar Pradesh');
       kv('Khasra number', kh || 'not entered (read it off the khasra map)');
+      kv('Shatru Sampatti', epCheck(vi, kh).text);
       kv('Coordinates', ll[1].toFixed(5) + ', ' + ll[0].toFixed(5) + '   maps.google.com/?q=' + ll[1].toFixed(5) + ',' + ll[0].toFixed(5));
       var rs = nearest(ll, 'RRTS'), ms = nearest(ll, 'Metro');
       kv('Nearest RRTS station', rs ? rs.n + ', ' + rs.d.toFixed(1) + ' km straight line' : '-');
@@ -219,7 +241,7 @@
       var iw = 92, ih = 62; d.addImage(imgs[0], 'JPEG', 10, y, iw, ih); d.addImage(imgs[1], 'JPEG', 108, y, iw, ih);
       d.setFontSize(7.5); d.setTextColor(100); d.text('Wider area', 10, y + ih + 3.5); d.text('Close-up (red ring = selected point)', 108, y + ih + 3.5); y += ih + 9; d.setFontSize(9.5); d.setTextColor(30);
       head('Checks before buying (tick and note)');
-      ['Khatauni (Bhulekh): owner name and area match the seller\'s papers', 'Plot sale status (Bhulekh service)', 'Plot litigation status (Bhulekh service)', 'Khasra map boundary matches the boundary on site / shajra',
+      ['Khatauni (Bhulekh): owner name and area match the seller\'s papers', 'Plot sale status (Bhulekh service)', 'Plot litigation status (Bhulekh service) and Shatru Sampatti status', 'Khasra map boundary matches the boundary on site / shajra',
        'Not in the GDA unauthorised colonies list (latest list)', 'RERA registration, if sold as part of a project', 'Planning zone and permitted use confirmed with GDA', 'Road access and site visit done', 'Registry and encumbrance checked'].forEach(function (s) {
         d.setDrawColor(90); d.rect(10, y - 3.2, 3.8, 3.8); d.setFontSize(9); d.text(s, 16, y); d.setDrawColor(210); d.line(128, y + 0.5, W - 10, y + 0.5); y += 6.4;
       });
@@ -233,12 +255,14 @@
   function init() {
     M = window.mpm; map = M.map;
     popEl = document.createElement('div'); popEl.id = 'mpm-pop'; document.body.appendChild(popEl);
+    ['input', 'change'].forEach(function (ev) { popEl.addEventListener(ev, epShow); });
     pop = new ol.Overlay({ element: popEl, positioning: 'bottom-center', offset: [0, -10], stopEvent: true }); map.addOverlay(pop);
     map.on('singleclick', onClick);
     M.snapshot = snapshot; M.shotAt = shotAt; M.exportReport = exportReport;   // also used for testing
     shareBar(); infoButton();
     if (q.get('client') === '1') { clientMode(); }
     fetch('mpm/data/bhulekh_villages.json').then(function (r) { return r.json(); }).then(function (b) { bhu = b; Object.keys(b.tehsils).forEach(function (k) { b.tehsils[k].villages.split(';').forEach(function (s) { var p = s.split('|'); byCode[p[0]] = { name: p[1], tehsil: k }; }); }); }).catch(function () {});
+    fetch('mpm/data/enemy_property.json').then(function (r) { return r.json(); }).then(function (j) { ep = j; }).catch(function () {});
     fetch('mpm/data/landmarks.json').then(function (r) { return r.json(); }).then(function (l) { lm = l.items; }).catch(function () {});
     Promise.all([fetch('mpm/data/villages.json').then(function (r) { return r.json(); }), fetch('mpm/data/zonecolors.json').then(function (r) { return r.json(); })]).then(function (r) {
       zc = r[1]; var img = new Image(); img.onload = function () {
