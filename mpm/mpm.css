@@ -185,5 +185,6 @@ body[data-theme='dark'] #theme-toggle { --ic: url("data:image/svg+xml,%3Csvg xml
 
 #mpm-pop select { max-width: 150px; padding: 4px; border: 1px solid var(--input-border); border-radius: 6px; background: var(--input-bg); color: var(--text-color); font-size: 12px; }
 #mpm-info { --ic: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Cg fill=%27none%27 stroke=%27black%27 stroke-width=%272%27 stroke-linecap=%27round%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%277%27/%3E%3Cpath d=%27M12 2v4M12 18v4M2 12h4M18 12h4%27/%3E%3C/g%3E%3C/svg%3E"); }
+#mpm-ep.hit b { color: #d32f2f; } #mpm-ep.near b { color: #c77700; } #mpm-ep b { font-weight: 500; font-size: 12px; }
 #map.mpm-pick, #map.mpm-pick canvas { cursor: crosshair; }
 #mpm-pop .b button.alt { background: transparent; color: var(--primary); }
