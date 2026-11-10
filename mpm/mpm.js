@@ -186,7 +186,7 @@
     return new ol.source.GeoTIFF({ sources: [{ url: c.cogUrl }], interpolate: true, normalize: true, wrapX: false });
   }
 
-  var EXTRA_OPACITY = 0.85;
+  var EXTRA_OPACITY = 0.5;
   // stacking order: new layers go on top, but khasra ("top") layers stay above master plans until you move them
   function layerOf(name) { return extras[name] || (current && current.name === name ? mainLayer() : null); }
   function applyOrder() { order.forEach(function (n, i) { var l = layerOf(n); if (l) { l.setZIndex(i + 1); } }); }
