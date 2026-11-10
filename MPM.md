@@ -71,6 +71,12 @@ The maps barely change, so a service worker keeps them on the device after the f
 - If you add villages, rerun `mk_idgrid.py` and commit the two files in `mpm/data/`.
 - Feasibility of the one-page plot report: `docs/PLOT_REPORT_FEASIBILITY.md`.
 
+## Khasra registration check (2026-11-10)
+- Placement is exact to the portal (1 m grid, EPSG:32644). Against Esri imagery the portal sheets still sit about 5 to 15 m off, differently per village and per spot (each village sheet was digitised separately, so neighbours do not edge-match on roads).
+- Method: per 500 m window, normalised cross-correlation of khasra line pixels against imagery edges (Sobel), median of the strong windows. Tested Yusufpur Isapur (119653, 16 windows), 119591, 119571, 119654, 119564.
+- Only Isapur has a clear, consistent offset: 9 m west, 17 m south (strong windows median 0.5 m after shifting). It was moved by that amount in the mosaic. No other village was moved: their offsets vary inside the village and are within the ±5 m accuracy of the imagery itself.
+- Reversible: offsets live in `offsets.json` ({"119653": [-9, -17]}, metres east and north) in the khasra work folder (`masterplans/khasra_modinagar`, read by `mk_mosaic.py`). Delete the entry and rebuild to return to the pure portal position. The village id grid (`villages_grid.png`, 20 m cells) was not shifted.
+
 ## One-page plot report and Bhulekh help
 - Click the map, then **One-page report**: A4 PDF with village (English and portal code), tehsil, khasra number you typed, coordinates, nearest RRTS and Delhi Metro station (straight line, from `mpm/data/landmarks.json`), planning zones from the visible layers, a wider and a close-up map with the selected point ringed, a 9-item buying checklist with tick boxes, links and the disclaimer. Verified by generating one in Chrome and reading the PDF back.
 - **Open Khatauni** goes to `https://upbhulekh.gov.in/#/selection` (the district list; the home page and service click are skipped) and copies the village name for the Search Village box. Bhulekh keeps district, tehsil and village in page state (the URL stays `#/selection`), so it cannot be pre-filled by link. **Bhu-Naksha** copies the village code. Owner data is never fetched or stored here.
