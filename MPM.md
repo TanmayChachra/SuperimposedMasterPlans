@@ -59,7 +59,7 @@ The maps barely change, so a service worker keeps them on the device after the f
 
 ## Layers panel (UI)
 - Each active layer is a row with its own show/hide box, opacity slider, `i` button (legend, source, accuracy) and remove button. The primary layer's slider is upstream's own `#opacity-slider` (upstream resets opacity from it on every city load); overlays have their own.
-- "+ Add a layer" is a grouped picker (master plans, khasra, other cities). The first layer chosen becomes the primary layer, later ones are overlays (default opacity 0.85). Removing the primary layer hides it, and the next layer added becomes primary.
+- "+ Add a layer" is a grouped picker (master plans, khasra, other cities). The first layer chosen becomes the primary layer, later ones are overlays (default opacity 0.5). Removing the primary layer hides it, and the next layer added becomes primary.
 - Branding: Silverleaf Buildcon header, green theme in `mpm/mpm.css` (CSS variables at the top of the theme block), `noindex` meta and `robots.txt` Disallow since this is an internal tool. The About text no longer names the upstream author; credit stays in this file and the repo history.
 
 ## Click info, sharing, client view (mpm/tools.js)
